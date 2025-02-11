@@ -5,6 +5,7 @@ import com.ginkgooai.model.request.SendEmailResultRequest;
 import com.ginkgooai.model.response.SendEmailResultResponse;
 import com.ginkgooai.service.MailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/messaging/mail")
+@EnableFeignClients
 @RequiredArgsConstructor
 public class MailController {
 
