@@ -6,6 +6,7 @@ import com.ginkgooai.model.response.SendEmailResultResponse;
 import com.ginkgooai.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,15 +31,15 @@ public class MailController {
      */
 
     @PostMapping
-    public SendEmailResultResponse sendMail(@RequestBody SendEmailResultRequest request) {
-        return mailService.sendMail(request.getEmailsTo(),
+    public ResponseEntity<SendEmailResultResponse> sendMail(@RequestBody SendEmailResultRequest request) {
+        return ResponseEntity.ok(mailService.sendMail(request.getEmailsTo(),
                 request.getCcList(),
                 request.getReplyList(),
                 request.getSubject(),
                 request.getContent(),
                 request.getAttachments(),
                 request.getSenderName(),
-                request.getIpPoolName());
+                request.getIpPoolName()));
     }
 
 }
