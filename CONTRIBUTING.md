@@ -48,7 +48,7 @@ npm test # or `mvn test` for Java projects
 ## Contributor License Agreement (CLA)
 
 By contributing to this project, you agree to the terms outlined in our [CLA](./CLA.md).  
-This ensures that all contributions align with the project's **dual licensing model** (AGPL-3.0 & Commercial).
+This ensures that all contributions align with the project's **dual licensing model** (AGPL-3.0 & Commercial).  
 
 ### Key Points:
 - You confirm that you **own the rights** to your contributions or have permission to contribute them.
@@ -57,3 +57,4 @@ This ensures that all contributions align with the project's **dual licensing mo
 
 Before submitting your first PR, please review the [CLA](./CLA.md).  
 If you have any questions, contact: **[license@ginkgoo.ai](mailto:license@ginkgoo.ai)**.
+

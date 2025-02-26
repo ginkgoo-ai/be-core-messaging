@@ -1,5 +1,7 @@
 # AGPLv3 & Commercial License
 
+
+
 ## License
 
 This project is available under a **dual licensing model**:
@@ -12,18 +14,6 @@ This project is available under a **dual licensing model**:
   If you wish to use this software **without complying with AGPL-3.0**  
   or require a **proprietary license** with different terms,  
   please contact **[license@ginkgoo.ai](mailto:license@ginkgoo.ai)**.
-
-## Examples
-
-The `examples/` directory contains sample implementations in different programming languages  
-to demonstrate basic usage.
-
-- [Java Example](examples/Example.java)
-- [Go Example](examples/example.go)
-- [JavaScript Example](examples/example.js)
-- [Python Example](examples/example.py)
-
-Each file includes a licensing header and serves as a simple reference for using this project.
 
 ## Contributing
 
