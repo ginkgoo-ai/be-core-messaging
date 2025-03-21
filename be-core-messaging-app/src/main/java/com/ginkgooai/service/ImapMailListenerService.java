@@ -1,11 +1,18 @@
 package com.ginkgooai.service;
 
+import com.ginkgooai.client.ai.AiClient;
+import com.ginkgooai.core.common.bean.ActivityType;
+import com.ginkgooai.core.common.utils.ActivityLogger;
+import com.ginkgooai.core.common.utils.ContextUtils;
+import com.sun.mail.imap.IMAPMessage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 import jakarta.mail.*;
 import jakarta.mail.event.MessageCountAdapter;
 import jakarta.mail.event.MessageCountEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +31,10 @@ public class ImapMailListenerService {
 
     private volatile Store store;
     private volatile Folder inbox;
-
+    @Resource
+    private AiClient aiClient;
+    @Autowired
+    private ActivityLogger activityLogger;
     private ScheduledFuture<?> heartbeatTask;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private final AtomicInteger retryCounter = new AtomicInteger(0);
@@ -119,10 +129,25 @@ public class ImapMailListenerService {
         }
     }
 
+    /**
+     * Handles a new, unseen message.
+     *
+     * @param msg The Message object representing the new email.
+     */
+
     private void handleNewMessage(Message msg) throws MessagingException {
         log.info("new message achieve - subject: {}", msg.getSubject());
+        IMAPMessage imapMessage = (IMAPMessage)msg;
+        activityLogger.log(
+                "project.getWorkspaceId()",
+                "project.getId()",
+                null,
+                ActivityType.PROJECT_CREATED,
+                null,
+                null,
+                ContextUtils.getUserId());
         msg.setFlag(Flags.Flag.SEEN, true);
-        // 在此添加业务处理逻辑
+
     }
 
     private boolean isConnectionActive() throws MessagingException {

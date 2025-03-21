@@ -1,14 +1,25 @@
+core-ai-uri: ${SERVICE_SCHEME}://${CORE_AI_HOST}:${CORE_AI_PORT}
+
 server:
   port: ${SERVER_PORT}
 
 spring:
   application:
     name: be-core-messaging-app
+
   data:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${AUTH_SERVER}/oauth2/jwks
+          issuer-uri: ${AUTH_SERVER}
+
 mail:
   imap:
     host: ${MAIL_HOST}
