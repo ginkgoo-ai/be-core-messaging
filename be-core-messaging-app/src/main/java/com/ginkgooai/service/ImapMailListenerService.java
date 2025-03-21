@@ -2,8 +2,8 @@ package com.ginkgooai.service;
 
 import com.ginkgooai.client.ai.AiClient;
 import com.ginkgooai.core.common.bean.ActivityType;
-import com.ginkgooai.core.common.utils.ActivityLogger;
 import com.ginkgooai.core.common.utils.ContextUtils;
+import com.ginkgooai.util.EmailSender;
 import com.sun.mail.imap.IMAPMessage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -34,7 +34,7 @@ public class ImapMailListenerService {
     @Resource
     private AiClient aiClient;
     @Autowired
-    private ActivityLogger activityLogger;
+    private EmailSender emailSender;
     private ScheduledFuture<?> heartbeatTask;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private final AtomicInteger retryCounter = new AtomicInteger(0);
@@ -138,14 +138,7 @@ public class ImapMailListenerService {
     private void handleNewMessage(Message msg) throws MessagingException {
         log.info("new message achieve - subject: {}", msg.getSubject());
         IMAPMessage imapMessage = (IMAPMessage)msg;
-        activityLogger.log(
-                "project.getWorkspaceId()",
-                "project.getId()",
-                null,
-                ActivityType.PROJECT_CREATED,
-                null,
-                null,
-                ContextUtils.getUserId());
+        emailSender.send(imapMessage);
         msg.setFlag(Flags.Flag.SEEN, true);
 
     }
