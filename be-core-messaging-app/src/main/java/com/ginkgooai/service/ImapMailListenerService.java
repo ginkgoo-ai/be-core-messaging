@@ -1,27 +1,27 @@
 package com.ginkgooai.service;
 
-import com.ginkgooai.client.ai.AiClient;
-import com.ginkgooai.core.common.bean.ActivityType;
-import com.ginkgooai.core.common.utils.ContextUtils;
 import com.ginkgooai.util.EmailSender;
 import com.sun.mail.imap.IMAPMessage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import jakarta.annotation.Resource;
 import jakarta.mail.*;
 import jakarta.mail.event.MessageCountAdapter;
 import jakarta.mail.event.MessageCountEvent;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ImapMailListenerService {
     // 配置参数
     @Value("${mail.imap.host}") private String host;
@@ -31,10 +31,8 @@ public class ImapMailListenerService {
 
     private volatile Store store;
     private volatile Folder inbox;
-    @Resource
-    private AiClient aiClient;
-    @Autowired
-    private EmailSender emailSender;
+
+    private final EmailSender emailSender;
     private ScheduledFuture<?> heartbeatTask;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private final AtomicInteger retryCounter = new AtomicInteger(0);
@@ -168,7 +166,6 @@ public class ImapMailListenerService {
         }, delay, TimeUnit.MILLISECONDS);
     }
 
-    // 关闭资源
     private void closeResources() {
         try {
             if (inbox != null && inbox.isOpen()) inbox.close(false);
@@ -178,14 +175,12 @@ public class ImapMailListenerService {
         }
     }
 
-    // 取消现有心跳任务
     private void cancelExistingHeartbeat() {
         if (heartbeatTask != null && !heartbeatTask.isDone()) {
             heartbeatTask.cancel(true);
         }
     }
 
-    // 创建会话配置
     private Properties createSessionProperties() {
         Properties props = new Properties();
         props.put("mail.imap.ssl.trust", "*");

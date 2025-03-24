@@ -2,7 +2,7 @@ package com.ginkgooai.util;
 
 import com.ginkgooai.core.common.constant.MessageQueue;
 import com.ginkgooai.core.common.queue.QueueInterface;
-import com.ginkgooai.dto.MailSendMessage;
+import com.ginkgooai.core.common.message.MailSendMessage;
 import com.sun.mail.imap.IMAPMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
