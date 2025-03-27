@@ -40,7 +40,8 @@ public class ImapMailListenerService {
 
     @PostConstruct
     public void startListening() {
-        initAsync();
+        //todo imap
+//        initAsync();
     }
 
     private void initAsync() {

@@ -1,12 +1,14 @@
-package com.ginkgooai.model.request;
+package com.ginkgooai.dto.request;
 
-import com.ginkgooai.model.Attachment;
+import com.ginkgooai.domain.Attachment;
+import com.ginkgooai.domain.EmailType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: david
@@ -18,6 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SendEmailResultRequest {
 
+    private EmailType emailType;
+    private Map<String, String> placeholders;
     private List<String> emailsTo;
     private List<String> ccList;
     private List<String> bccList;

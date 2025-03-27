@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ginkgooai.core.common.exception.GinkgooRunTimeException;
 import com.ginkgooai.core.common.exception.enums.CustomErrorEnum;
-import com.ginkgooai.model.Attachment;
+import com.ginkgooai.domain.Attachment;
 import com.ginkgooai.model.enums.EmailRecordEnum;
 import com.ginkgooai.model.response.SendEmailResultResponse;
 import com.sendgrid.Method;
@@ -48,7 +48,7 @@ public class SendGridUtil {
     private String sendGridSenderName;
 
 
-    public SendEmailResultResponse sendMail(List<String> emailsTo, List<String> ccList,List<String> replyList, String subject, String mailContent, List<Attachment> attachments, String senderName, String ipPoolName) throws GinkgooRunTimeException {
+    public SendEmailResultResponse sendMail(List<String> emailsTo, List<String> ccList, List<String> replyList, String subject, String mailContent, List<Attachment> attachments, String senderName, String ipPoolName) throws GinkgooRunTimeException {
         SendEmailResultResponse sendEmailResultResponse = new SendEmailResultResponse();
 
         senderName = ObjectUtils.isEmpty(senderName) ? sendGridSenderName : senderName;
@@ -74,9 +74,9 @@ public class SendGridUtil {
         }
         if (!ObjectUtils.isEmpty(attachments)) {
             attachments.forEach(attachment -> {
-                Attachments.Builder builder = new Attachments.Builder(attachment.getName(), attachment.getInputStream());
-                if (!StringUtils.isEmpty(attachment.getType())) {
-                    builder.withType(attachment.getType());
+                Attachments.Builder builder = new Attachments.Builder(attachment.getFilename(), attachment.getPath());
+                if (!StringUtils.isEmpty(attachment.getContentType())) {
+                    builder.withType(attachment.getContentType());
                 }
                 mail.addAttachments(builder.build());
             });

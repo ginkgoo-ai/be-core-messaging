@@ -1,6 +1,7 @@
 package com.ginkgooai.service;
 
-import com.ginkgooai.model.Attachment;
+import com.ginkgooai.domain.Attachment;
+import com.ginkgooai.dto.request.SendEmailResultRequest;
 import com.ginkgooai.model.response.SendEmailResultResponse;
 
 import java.util.List;
@@ -12,4 +13,7 @@ import java.util.List;
 public interface MailService {
 
     SendEmailResultResponse sendMail(List<String> emailsTo, List<String> ccList, List<String> replyList, String subject, String mailContent, List<Attachment> attachments, String senderName, String ipPoolName);
+
+    SendEmailResultResponse sendMail(SendEmailResultRequest request);
+
 }

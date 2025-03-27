@@ -19,6 +19,11 @@ spring:
         jwt:
           jwk-set-uri: ${AUTH_SERVER}/oauth2/jwks
           issuer-uri: ${AUTH_SERVER}
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?currentSchema=messaging
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
 mail:
   imap:
@@ -27,7 +32,6 @@ mail:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
 
-    # 需要Google账户生成应用专用密码
 #    protocol: imaps
 #    props:
 #      mail.imap.ssl.enable: true
@@ -49,3 +53,13 @@ management:
   health:
     ldap:
       enabled: false
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api/messaging/v3/api-docs
+  swagger-ui:
+    enabled: true
+    csrf:
+      enabled: true
+    path: /api/messaging/swagger-ui.html

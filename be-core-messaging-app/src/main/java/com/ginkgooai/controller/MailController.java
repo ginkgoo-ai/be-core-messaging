@@ -1,7 +1,8 @@
 package com.ginkgooai.controller;
 
 import com.ginkgooai.core.common.exception.GinkgooRunTimeException;
-import com.ginkgooai.model.request.SendEmailResultRequest;
+import com.ginkgooai.domain.EmailType;
+import com.ginkgooai.dto.request.SendEmailResultRequest;
 import com.ginkgooai.model.response.SendEmailResultResponse;
 import com.ginkgooai.service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +33,10 @@ public class MailController {
 
     @PostMapping
     public ResponseEntity<SendEmailResultResponse> sendMail(@RequestBody SendEmailResultRequest request) {
-        return ResponseEntity.ok(mailService.sendMail(request.getEmailsTo(),
-                request.getCcList(),
-                request.getReplyList(),
-                request.getSubject(),
-                request.getContent(),
-                request.getAttachments(),
-                request.getSenderName(),
-                request.getIpPoolName()));
+        return ResponseEntity.ok(mailService.sendMail(request));
     }
+
+
+
 
 }
