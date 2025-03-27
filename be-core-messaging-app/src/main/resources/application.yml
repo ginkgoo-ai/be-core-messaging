@@ -1,7 +1,7 @@
 core-ai-uri: ${SERVICE_SCHEME}://${CORE_AI_HOST}:${CORE_AI_PORT}
 
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8080}
 
 spring:
   application:
