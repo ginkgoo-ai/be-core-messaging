@@ -27,7 +27,7 @@ public class EmailTemplateDto {
     @Schema(description = "Description of the email template", example = "Template for sending welcome emails to new users")
     private String description;
     
-    @Schema(description = "Type of the email template", example = "WELCOME")
+    @Schema(description = "Type of the email template", example = "INVITATION | INVITE_UPLOAD")
     @NotNull(message = "Email type cannot be null")
     private EmailType emailType;
     
