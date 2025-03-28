@@ -70,9 +70,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     @Override
     @Transactional(readOnly = true)
-    public EmailTemplateDto getEmailTemplateById(Long id) {
+    public EmailTemplateDto getEmailTemplateById(String id) {
         EmailTemplate emailTemplate = emailTemplateRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id.toString()));
+                .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id));
         return convertToDto(emailTemplate);
     }
 
@@ -93,10 +93,10 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     @Override
     @Transactional
-    public EmailTemplateDto updateEmailTemplate(Long id, EmailTemplateDto emailTemplateDto) {
+    public EmailTemplateDto updateEmailTemplate(String id, EmailTemplateDto emailTemplateDto) {
         // 检查模板是否存在
         EmailTemplate existingTemplate = emailTemplateRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id.toString()));
+                .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id));
         
         // 如果更改了名称，检查新名称是否与其他模板冲突
         if (!existingTemplate.getName().equals(emailTemplateDto.getName()) && 
@@ -118,9 +118,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     @Override
     @Transactional
-    public void deleteEmailTemplate(Long id) {
+    public void deleteEmailTemplate(String id) {
         if (!emailTemplateRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Email Template", "id", id.toString());
+            throw new ResourceNotFoundException("Email Template", "id", id);
         }
         
         emailTemplateRepository.deleteById(id);

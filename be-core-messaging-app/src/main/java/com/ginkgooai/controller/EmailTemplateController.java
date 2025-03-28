@@ -65,7 +65,7 @@ public class EmailTemplateController {
     @GetMapping("/{id}")
     public ResponseEntity<EmailTemplateDto> getEmailTemplateById(
             @Parameter(description = "Email template ID", required = true)
-            @PathVariable Long id) {
+            @PathVariable String id) {
         EmailTemplateDto emailTemplateDto = emailTemplateService.getEmailTemplateById(id);
         return ResponseEntity.ok(emailTemplateDto);
     }
@@ -109,7 +109,7 @@ public class EmailTemplateController {
     @PutMapping("/{id}")
     public ResponseEntity<EmailTemplateDto> updateEmailTemplate(
             @Parameter(description = "Email template ID", required = true)
-            @PathVariable Long id,
+            @PathVariable String id,
             @Parameter(description = "Updated email template details", required = true)
             @Valid @RequestBody EmailTemplateDto emailTemplateDto) {
         EmailTemplateDto updatedTemplate = emailTemplateService.updateEmailTemplate(id, emailTemplateDto);
@@ -130,7 +130,7 @@ public class EmailTemplateController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmailTemplate(
             @Parameter(description = "Email template ID", required = true)
-            @PathVariable Long id) {
+            @PathVariable String id) {
         emailTemplateService.deleteEmailTemplate(id);
         return ResponseEntity.noContent().build();
     }

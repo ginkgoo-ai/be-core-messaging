@@ -24,7 +24,7 @@ public interface EmailTemplateService {
      * @param id email template ID
      * @return email template DTO
      */
-    EmailTemplateDto getEmailTemplateById(Long id);
+    EmailTemplateDto getEmailTemplateById(String id);
     
     /**
      * Get all email templates with optional filtering
@@ -42,12 +42,12 @@ public interface EmailTemplateService {
      * @param emailTemplateDto email template DTO
      * @return updated email template DTO
      */
-    EmailTemplateDto updateEmailTemplate(Long id, EmailTemplateDto emailTemplateDto);
+    EmailTemplateDto updateEmailTemplate(String id, EmailTemplateDto emailTemplateDto);
     
     /**
      * Delete an email template
      *
      * @param id email template ID
      */
-    void deleteEmailTemplate(Long id);
+    void deleteEmailTemplate(String id);
 } 

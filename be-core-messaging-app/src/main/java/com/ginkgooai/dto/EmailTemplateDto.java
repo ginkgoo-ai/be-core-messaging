@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class EmailTemplateDto {
     
     @Schema(description = "Unique identifier of the email template")
-    private Long id;
+    private String id;
     
     @Schema(description = "Name of the email template", example = "Welcome Email")
     @NotBlank(message = "Template name cannot be empty")

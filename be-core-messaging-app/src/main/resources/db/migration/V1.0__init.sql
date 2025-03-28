@@ -1,20 +1,17 @@
 -- Create email related tables
 ------------------------------------------
 
--- 邮件类型枚举
-CREATE TYPE email_type AS ENUM ('INVITATION', 'INVITE_UPLOAD');
-
 -- Email表
 DROP TABLE IF EXISTS emails CASCADE;
 CREATE TABLE emails (
-                        id BIGSERIAL PRIMARY KEY NOT NULL,
+                        id VARCHAR(36) PRIMARY KEY,
                         sender VARCHAR(255) NOT NULL,
                         receiver VARCHAR(255) NOT NULL,
                         cc VARCHAR(255),
                         bcc VARCHAR(255),
                         subject VARCHAR(255) NOT NULL,
                         content TEXT,
-                        type email_type NOT NULL,
+                        email_type VARCHAR(100) NOT NULL,
                         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
                         updated_at TIMESTAMP WITH TIME ZONE
 );
@@ -27,12 +24,12 @@ CREATE INDEX idx_email_created ON emails USING btree (created_at DESC);
 -- Attachment表
 DROP TABLE IF EXISTS attachments CASCADE;
 CREATE TABLE attachments (
-                             id BIGSERIAL PRIMARY KEY NOT NULL,
+                             id VARCHAR(36) PRIMARY KEY,
                              filename VARCHAR(255) NOT NULL,
                              path TEXT NOT NULL,
                              size BIGINT NOT NULL,
                              content_type VARCHAR(100),
-                             email_id BIGINT NOT NULL,
+                             email_id VARCHAR(36) NOT NULL,
                              created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
                              updated_at TIMESTAMP WITH TIME ZONE,
                              CONSTRAINT fk_attachment_email FOREIGN KEY (email_id) REFERENCES emails(id) ON DELETE CASCADE
@@ -45,10 +42,10 @@ CREATE INDEX idx_attachment_created ON attachments USING btree (created_at DESC)
 -- EmailTemplate表
 DROP TABLE IF EXISTS email_templates CASCADE;
 CREATE TABLE email_templates (
-                                 id BIGSERIAL PRIMARY KEY NOT NULL,
+                                 id VARCHAR(36) PRIMARY KEY,
                                  name VARCHAR(255) NOT NULL,
                                  description VARCHAR(255),
-                                 email_type email_type NOT NULL,
+                                 email_type VARCHAR(100) NOT NULL,
                                  subject VARCHAR(255) NOT NULL,
                                  content TEXT,
                                  properties TEXT,

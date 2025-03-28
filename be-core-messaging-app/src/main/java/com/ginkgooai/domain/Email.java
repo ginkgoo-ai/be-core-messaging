@@ -17,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Email {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     private String sender;
     private String receiver;
@@ -29,8 +29,8 @@ public class Email {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "email_type")
-    private EmailType type;
+    @Enumerated(EnumType.STRING)
+    private EmailType emailType;
 
     @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Attachment> attachments;
