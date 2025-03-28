@@ -29,7 +29,7 @@ public class Email {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "email_type")
     private EmailType type;
 
     @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
