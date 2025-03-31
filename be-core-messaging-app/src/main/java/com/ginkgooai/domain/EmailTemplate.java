@@ -37,5 +37,5 @@ public class EmailTemplate {
     private String content;
     
     @Column(columnDefinition = "TEXT")
-    private String properties;
+    private String placeholders;
 }

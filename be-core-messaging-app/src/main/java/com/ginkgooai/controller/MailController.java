@@ -1,14 +1,17 @@
 package com.ginkgooai.controller;
 
 import com.ginkgooai.core.common.exception.GinkgooRunTimeException;
-import com.ginkgooai.domain.EmailType;
-import com.ginkgooai.dto.request.SendEmailResultRequest;
+import com.ginkgooai.dto.request.SendEmailResultInnerRequest;
 import com.ginkgooai.model.response.SendEmailResultResponse;
 import com.ginkgooai.service.MailService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author: david
@@ -32,11 +35,9 @@ public class MailController {
      */
 
     @PostMapping
-    public ResponseEntity<SendEmailResultResponse> sendMail(@RequestBody SendEmailResultRequest request) {
-        return ResponseEntity.ok(mailService.sendMail(request));
+    @Hidden
+    public ResponseEntity<SendEmailResultResponse> sendMailInner(@RequestBody SendEmailResultInnerRequest request) {
+        return ResponseEntity.ok(mailService.sendMailInner(request));
     }
-
-
-
 
 }

@@ -3,7 +3,8 @@ package com.ginkgooai.service;
 import com.ginkgooai.core.common.exception.ResourceNotFoundException;
 import com.ginkgooai.domain.Attachment;
 import com.ginkgooai.domain.EmailTemplate;
-import com.ginkgooai.dto.request.SendEmailResultRequest;
+import com.ginkgooai.domain.EmailType;
+import com.ginkgooai.dto.request.SendEmailResultInnerRequest;
 import com.ginkgooai.model.response.SendEmailResultResponse;
 import com.ginkgooai.repository.EmailTemplateRepository;
 import com.ginkgooai.util.SendGridUtil;
@@ -38,7 +39,7 @@ public class SendGridServiceImpl implements MailService {
         }
         String result = template;
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-            result = result.replace("${" + entry.getKey() + "}", entry.getValue());
+            result = result.replace("{" + entry.getKey() + "}", entry.getValue());
         }
         return result;
     }
@@ -49,12 +50,12 @@ public class SendGridServiceImpl implements MailService {
     }
 
     @Override
-    public SendEmailResultResponse sendMail(SendEmailResultRequest request) {
+    public SendEmailResultResponse sendMailInner(SendEmailResultInnerRequest request) {
         // Find the email template by emailType
-        EmailTemplate template = emailTemplateRepository.findByEmailType(request.getEmailType())
+        EmailTemplate template = emailTemplateRepository.findByEmailType(EmailType.valueOf(request.getEmailType()))
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Email Template", "emailType", request.getEmailType().toString()));
+                .orElseThrow(() -> new ResourceNotFoundException("Email Template", "emailType", request.getEmailType()));
 
         // Replace placeholders in both content and subject
         String content = replacePlaceholders(template.getContent(), request.getPlaceholders());

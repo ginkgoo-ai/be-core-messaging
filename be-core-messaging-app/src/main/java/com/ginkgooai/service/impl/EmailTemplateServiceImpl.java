@@ -1,6 +1,5 @@
 package com.ginkgooai.service.impl;
 
-import com.ginkgooai.core.common.exception.GinkgooRunTimeException;
 import com.ginkgooai.core.common.exception.ResourceDuplicatedException;
 import com.ginkgooai.core.common.exception.ResourceNotFoundException;
 import com.ginkgooai.domain.EmailTemplate;
@@ -26,35 +25,6 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     private final EmailTemplateRepository emailTemplateRepository;
 
-    /**
-     * 将EmailTemplate实体转换为DTO
-     */
-    private EmailTemplateDto convertToDto(EmailTemplate emailTemplate) {
-        return EmailTemplateDto.builder()
-                .id(emailTemplate.getId())
-                .name(emailTemplate.getName())
-                .description(emailTemplate.getDescription())
-                .emailType(emailTemplate.getEmailType())
-                .subject(emailTemplate.getSubject())
-                .content(emailTemplate.getContent())
-                .properties(emailTemplate.getProperties())
-                .build();
-    }
-
-    /**
-     * 将DTO转换为EmailTemplate实体
-     */
-    private EmailTemplate convertToEntity(EmailTemplateDto emailTemplateDto) {
-        EmailTemplate emailTemplate = new EmailTemplate();
-        emailTemplate.setName(emailTemplateDto.getName());
-        emailTemplate.setDescription(emailTemplateDto.getDescription());
-        emailTemplate.setEmailType(emailTemplateDto.getEmailType());
-        emailTemplate.setSubject(emailTemplateDto.getSubject());
-        emailTemplate.setContent(emailTemplateDto.getContent());
-        emailTemplate.setProperties(emailTemplateDto.getProperties());
-        return emailTemplate;
-    }
-
     @Override
     @Transactional
     public EmailTemplateDto createEmailTemplate(EmailTemplateDto emailTemplateDto) {
@@ -63,9 +33,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
             throw new ResourceDuplicatedException("Email Template", "name", emailTemplateDto.getName());
         }
         
-        EmailTemplate emailTemplate = convertToEntity(emailTemplateDto);
+        EmailTemplate emailTemplate = EmailTemplateDto.convertToEntity(emailTemplateDto);
         EmailTemplate savedTemplate = emailTemplateRepository.save(emailTemplate);
-        return convertToDto(savedTemplate);
+        return EmailTemplateDto.convertToDto(savedTemplate);
     }
 
     @Override
@@ -73,7 +43,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     public EmailTemplateDto getEmailTemplateById(String id) {
         EmailTemplate emailTemplate = emailTemplateRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id));
-        return convertToDto(emailTemplate);
+        return EmailTemplateDto.convertToDto(emailTemplate);
     }
 
     @Override
@@ -87,7 +57,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         
         // Convert entities to DTOs and return
         return templates.stream()
-                .map(this::convertToDto)
+                .map(EmailTemplateDto::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -105,16 +75,13 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         }
         
         // 更新模板属性
-        existingTemplate.setName(emailTemplateDto.getName());
-        existingTemplate.setDescription(emailTemplateDto.getDescription());
-        existingTemplate.setEmailType(emailTemplateDto.getEmailType());
-        existingTemplate.setSubject(emailTemplateDto.getSubject());
-        existingTemplate.setContent(emailTemplateDto.getContent());
-        existingTemplate.setProperties(emailTemplateDto.getProperties());
-        
+        EmailTemplateDto.coverEmailTemplate(emailTemplateDto, existingTemplate);
+
         EmailTemplate updatedTemplate = emailTemplateRepository.save(existingTemplate);
-        return convertToDto(updatedTemplate);
+        return EmailTemplateDto.convertToDto(updatedTemplate);
     }
+
+
 
     @Override
     @Transactional

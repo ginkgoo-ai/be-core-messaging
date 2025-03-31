@@ -1,0 +1,1 @@
+ALTER TABLE email_templates rename properties to placeholders;

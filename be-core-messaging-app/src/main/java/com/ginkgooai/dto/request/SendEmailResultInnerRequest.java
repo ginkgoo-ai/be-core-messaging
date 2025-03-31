@@ -18,9 +18,10 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendEmailResultRequest {
+public class SendEmailResultInnerRequest {
 
-    private EmailType emailType;
+    private String id;
+    private String emailType;
     private Map<String, String> placeholders;
     private List<String> emailsTo;
     private List<String> ccList;

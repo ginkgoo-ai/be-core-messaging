@@ -47,6 +47,9 @@ public class SendGridUtil {
     @Value("${SENDGRID_SENDER_NAME:}")
     private String sendGridSenderName;
 
+    @Value("${SENDGRID_REPLY_TO:}")
+    private String replyTo;
+
 
     public SendEmailResultResponse sendMail(List<String> emailsTo, List<String> ccList, List<String> replyList, String subject, String mailContent, List<Attachment> attachments, String senderName, String ipPoolName) throws GinkgooRunTimeException {
         SendEmailResultResponse sendEmailResultResponse = new SendEmailResultResponse();
@@ -91,6 +94,11 @@ public class SendGridUtil {
             mail.setIpPoolId(ipPoolName);
         }
 
+        if (!ObjectUtils.isEmpty(replyTo)) {
+            mail.setReplyTo(new Email(replyTo));
+        }
+
+        //todo sendgrid not support reply to multiple addresses
         if(!CollectionUtils.isEmpty(replyList)) {
             mail.setReplyTo(new Email(replyList.getFirst()));
         }

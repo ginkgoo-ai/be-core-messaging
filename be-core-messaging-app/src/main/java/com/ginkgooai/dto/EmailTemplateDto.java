@@ -1,5 +1,6 @@
 package com.ginkgooai.dto;
 
+import com.ginkgooai.domain.EmailTemplate;
 import com.ginkgooai.domain.EmailType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,9 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 @Builder
@@ -38,6 +42,40 @@ public class EmailTemplateDto {
     @Schema(description = "HTML content of the email template", example = "<html><body><h1>Welcome!</h1><p>Thank you for joining our platform.</p></body></html>")
     private String content;
     
-    @Schema(description = "Additional properties in JSON format", example = "{\"sender\":\"noreply@example.com\",\"replyTo\":\"support@example.com\"}")
-    private String properties;
+    @Schema(description = "Email Place holders", example = "[\"FIRST_NAME\",\"LAST_NAME\"]")
+    private List<String> placeholders;
+
+
+    /**
+     * 将EmailTemplate实体转换为DTO
+     */
+    public static EmailTemplateDto convertToDto(EmailTemplate emailTemplate) {
+        return EmailTemplateDto.builder()
+                .id(emailTemplate.getId())
+                .name(emailTemplate.getName())
+                .description(emailTemplate.getDescription())
+                .emailType(emailTemplate.getEmailType())
+                .subject(emailTemplate.getSubject())
+                .content(emailTemplate.getContent())
+                .placeholders(Arrays.asList(emailTemplate.getPlaceholders().split(",")))
+                .build();
+    }
+
+    public static void coverEmailTemplate(EmailTemplateDto emailTemplateDto, EmailTemplate existingTemplate) {
+        existingTemplate.setName(emailTemplateDto.getName());
+        existingTemplate.setDescription(emailTemplateDto.getDescription());
+        existingTemplate.setEmailType(emailTemplateDto.getEmailType());
+        existingTemplate.setSubject(emailTemplateDto.getSubject());
+        existingTemplate.setContent(emailTemplateDto.getContent());
+        existingTemplate.setPlaceholders(String.join(",", emailTemplateDto.getPlaceholders()));
+    }
+
+    /**
+     * 将DTO转换为EmailTemplate实体
+     */
+    public static EmailTemplate convertToEntity(EmailTemplateDto emailTemplateDto) {
+        EmailTemplate emailTemplate = new EmailTemplate();
+        coverEmailTemplate(emailTemplateDto, emailTemplate);
+        return emailTemplate;
+    }
 } 
