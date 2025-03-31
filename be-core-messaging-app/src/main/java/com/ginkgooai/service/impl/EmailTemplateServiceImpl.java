@@ -28,9 +28,9 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Override
     @Transactional
     public EmailTemplateDto createEmailTemplate(EmailTemplateDto emailTemplateDto) {
-        // 检查是否已存在相同名称的模板
-        if (emailTemplateRepository.existsByName(emailTemplateDto.getName())) {
-            throw new ResourceDuplicatedException("Email Template", "name", emailTemplateDto.getName());
+
+        if (emailTemplateRepository.existsByType(emailTemplateDto.getEmailType())) {
+            throw new ResourceDuplicatedException("Email Template", "type", emailTemplateDto.getName());
         }
         
         EmailTemplate emailTemplate = EmailTemplateDto.convertToEntity(emailTemplateDto);
@@ -64,13 +64,11 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Override
     @Transactional
     public EmailTemplateDto updateEmailTemplate(String id, EmailTemplateDto emailTemplateDto) {
-        // 检查模板是否存在
         EmailTemplate existingTemplate = emailTemplateRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id));
         
-        // 如果更改了名称，检查新名称是否与其他模板冲突
-        if (!existingTemplate.getName().equals(emailTemplateDto.getName()) && 
-                emailTemplateRepository.existsByName(emailTemplateDto.getName())) {
+        if (!existingTemplate.getEmailType().equals(emailTemplateDto.getEmailType()) &&
+                emailTemplateRepository.existsByType(emailTemplateDto.getEmailType())) {
             throw new ResourceDuplicatedException("Email Template", "name", emailTemplateDto.getName());
         }
         

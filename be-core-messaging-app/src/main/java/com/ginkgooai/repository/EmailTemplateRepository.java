@@ -31,8 +31,8 @@ public interface EmailTemplateRepository extends JpaRepository<EmailTemplate, St
     /**
      * Check if a template with the given name exists
      *
-     * @param name template name
+     * @param emailType template type
      * @return true if exists, false otherwise
      */
-    boolean existsByName(String name);
+    boolean existsByType(EmailType emailType);
 } 
