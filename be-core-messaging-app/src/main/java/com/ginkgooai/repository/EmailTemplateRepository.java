@@ -34,5 +34,5 @@ public interface EmailTemplateRepository extends JpaRepository<EmailTemplate, St
      * @param emailType template type
      * @return true if exists, false otherwise
      */
-    boolean existsByType(EmailType emailType);
+    boolean existsByEmailType(EmailType emailType);
 } 

@@ -29,7 +29,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Transactional
     public EmailTemplateDto createEmailTemplate(EmailTemplateDto emailTemplateDto) {
 
-        if (emailTemplateRepository.existsByType(emailTemplateDto.getEmailType())) {
+        if (emailTemplateRepository.existsByEmailType(emailTemplateDto.getEmailType())) {
             throw new ResourceDuplicatedException("Email Template", "type", emailTemplateDto.getName());
         }
         
@@ -68,7 +68,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
                 .orElseThrow(() -> new ResourceNotFoundException("Email Template", "id", id));
         
         if (!existingTemplate.getEmailType().equals(emailTemplateDto.getEmailType()) &&
-                emailTemplateRepository.existsByType(emailTemplateDto.getEmailType())) {
+                emailTemplateRepository.existsByEmailType(emailTemplateDto.getEmailType())) {
             throw new ResourceDuplicatedException("Email Template", "name", emailTemplateDto.getName());
         }
         
