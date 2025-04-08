@@ -12,11 +12,11 @@ public class WebhookController {
 
     @PostMapping
     public String handleInboundEmail(
-            @RequestParam("from") String from,
-            @RequestParam("to") String to,
-            @RequestParam("subject") String subject,
-            @RequestParam("text") String text,
-            @RequestParam("headers") String headers) {
+            @RequestParam(value = "from",required = false) String from,
+            @RequestParam(value = "to",required = false) String to,
+            @RequestParam(value = "subject",required = false) String subject,
+            @RequestParam(value = "text",required = false) String text,
+            @RequestParam(value = "headers",required = false) String headers) {
 
         // 1. 验证签名
         if (!verifySignature(headers)) {

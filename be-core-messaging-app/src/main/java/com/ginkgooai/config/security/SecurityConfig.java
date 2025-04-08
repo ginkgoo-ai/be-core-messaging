@@ -31,11 +31,11 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/messaging/v3/api-docs/**",
                                 "/api/messaging/swagger-ui/**",
-                                "/api/messaging/webhook",
                                 "/webjars/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/health"
+                                "/health",
+                                "/webhook"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
