@@ -1,6 +1,7 @@
 package com.ginkgooai.controller;
 
 
+import com.ginkgooai.dto.InboundParseRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,18 +13,9 @@ public class WebhookController {
 
     @PostMapping
     public String handleInboundEmail(
-            @RequestParam(value = "from",required = false) String from,
-            @RequestParam(value = "to",required = false) String to,
-            @RequestParam(value = "subject",required = false) String subject,
-            @RequestParam(value = "text",required = false) String text,
-            @RequestParam(value = "headers",required = false) String headers) {
+            @RequestBody InboundParseRequest inboundParseRequest) {
 
-        // 1. 验证签名
-        if (!verifySignature(headers)) {
-            return "Signature verification failed!";
-        }
-
-        log.info("from: {}, to: {}, subject: {}, text: {}", from, to, subject, text);
+        log.info("inbound email receive request:{}", inboundParseRequest);
 
 //        // 2. 解析业务逻辑（例如提取工单ID）
 //        String ticketId = extractTicketId(to);
