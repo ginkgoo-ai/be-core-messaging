@@ -1,9 +1,15 @@
 package com.ginkgooai.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.ginkgooai.dto.InboundParseRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/webhook")
@@ -11,19 +17,49 @@ import org.springframework.web.bind.annotation.*;
 public class WebhookController {
 
 
-    @PostMapping
-    public String handleInboundEmail(
-            @RequestBody InboundParseRequest inboundParseRequest) {
+    @PostMapping(value = "/webhook", consumes = "multipart/form-data")
+    public ResponseEntity<String> handleInboundParse(
+            // 解析表单字段（使用@RequestPart绑定到对象属性）
+            @Valid @RequestPart("headers") String headers,
+            @RequestPart(value = "dkim", required = false) String dkim,
+            @RequestPart(value = "content-ids", required = false) List<String> contentIds,
+            @RequestPart("to") String to,
+            @RequestPart("from") String from,
+            @RequestPart(value = "html", required = false) String html,
+            @RequestPart(value = "text", required = false) String text,
+            @RequestPart(value = "sender_ip", required = false) String senderIp,
+            @RequestPart(value = "spam_report", required = false) String spamReport,
+            @RequestPart(value = "envelope", required = false) String envelope,
+            @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
+            @RequestPart("subject") String subject,
+            @RequestPart(value = "spam_score", required = false) String spamScore,
+            @RequestPart(value = "attachment-info", required = false) String attachmentInfo,
+            @RequestPart(value = "charsets", required = false) String charsets,
+            @RequestPart(value = "SPF", required = false) String spf) {
 
-        log.info("inbound email receive request:{}", inboundParseRequest);
+        // 构建请求对象
+        InboundParseRequest request = new InboundParseRequest();
+        request.setHeaders(headers);
+        request.setDkim(dkim);
+        request.setContentIds(contentIds);
+        request.setTo(to);
+        request.setFrom(from);
+        request.setHtml(html);
+        request.setText(text);
+        request.setSenderIp(senderIp);
+        request.setSpamReport(spamReport);
+        request.setEnvelope(envelope);
+        request.setAttachments(attachments);
+        request.setSubject(subject);
+        request.setSpamScore(spamScore);
+        request.setAttachmentInfo(attachmentInfo);
+        request.setCharsets(charsets);
+        request.setSPF(spf);
 
-//        // 2. 解析业务逻辑（例如提取工单ID）
-//        String ticketId = extractTicketId(to);
-//
-//        // 3. 更新数据库或触发后续操作
-//        System.out.println("Received email for ticket: " + ticketId);
+        log.info("Inbound parse request received:{}", JSON.toJSONString(request));
 
-        return "Success";
+
+        return ResponseEntity.ok("Success");
     }
 
 

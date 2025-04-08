@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class InboundParseRequest {
 
     private String envelope;
 
-    private String attachments;
+    private List<MultipartFile> attachments;
 
     private String subject;
 
