@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
@@ -30,7 +31,6 @@ public class WebhookController {
     public ResponseEntity<String> handleInboundParse(
             HttpServletRequest httpServletRequest,
             // 修改email参数类型为MultipartFile
-            @RequestPart(value = "email", required = false) MultipartFile emailFile,
             @RequestPart(value = "headers", required = false) String headers,
             @RequestPart(value = "dkim", required = false) String dkim,
             @RequestPart(value = "email", required = false) String email,
@@ -52,15 +52,14 @@ public class WebhookController {
         
         // 新增MimeMessage解析逻辑
         MimeMessage mimeMessage = null;
-        if (emailFile != null && !emailFile.isEmpty()) {
-            try {
-                Session mailSession = Session.getDefaultInstance(new Properties());
-                mimeMessage = new MimeMessage(mailSession, emailFile.getInputStream());
-            } catch (MessagingException | IOException e) {
-                log.error("Failed to parse MIME message", e);
-            }
-        }
+        try {
+            Session mailSession = Session.getDefaultInstance(new Properties());
+            mimeMessage = new MimeMessage(mailSession, new ByteArrayInputStream(email.getBytes()));
+            log.info("Inbound parse Message id>:{}", mimeMessage.getMessageID());
 
+        } catch (MessagingException e) {
+            log.error("Failed to parse MIME message", e);
+        }
 
         // 修改请求对象构建
         InboundParseRequest request = new InboundParseRequest();
@@ -82,6 +81,7 @@ public class WebhookController {
         request.setAttachmentInfo(attachmentInfo);
         request.setCharsets(charsets);
         request.setSPF(spf);
+
 
         log.info("Inbound parse request received:{}", JSON.toJSONString(request));
 
