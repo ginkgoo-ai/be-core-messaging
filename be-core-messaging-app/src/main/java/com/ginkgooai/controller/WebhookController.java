@@ -24,26 +24,29 @@ public class WebhookController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<String> handleInboundParse(HttpServletRequest httpServletRequest,
                                                      // 解析表单字段（使用@RequestPart绑定到对象属性）
-                                                     @RequestPart(value = "headers",required = false) String headers,
+                                                     @RequestPart(value = "headers", required = false) String headers,
                                                      @RequestPart(value = "dkim", required = false) String dkim,
-                                                     @RequestPart(value = "content-ids", required = false) List<String> contentIds,
+                                                     @RequestPart(value = "email", required = false) String email,
                                                      @RequestPart(value = "to",required = false) String to,
                                                      @RequestPart(value = "from",required = false) String from,
-                                                     @RequestPart(value = "html", required = false) String html,
-                                                     @RequestPart(value = "text", required = false) String text,
                                                      @RequestPart(value = "sender_ip", required = false) String senderIp,
                                                      @RequestPart(value = "spam_report", required = false) String spamReport,
                                                      @RequestPart(value = "envelope", required = false) String envelope,
-                                                     @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
                                                      @RequestPart(value = "subject",required = false) String subject,
                                                      @RequestPart(value = "spam_score", required = false) String spamScore,
-                                                     @RequestPart(value = "attachment-info", required = false) String attachmentInfo,
                                                      @RequestPart(value = "charsets", required = false) String charsets,
-                                                     @RequestPart(value = "SPF", required = false) String spf) {
+                                                     @RequestPart(value = "SPF", required = false) String spf,
+                                                     @RequestPart(value = "text", required = false) String text,
+                                                     @RequestPart(value = "html", required = false) String html,
+                                                     @RequestPart(value = "content-ids", required = false) List<String> contentIds,
+                                                     @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
+                                                     @RequestPart(value = "attachment-info", required = false) String attachmentInfo
+                                                     ) {
 
         // 构建请求对象
         InboundParseRequest request = new InboundParseRequest();
         request.setHeaders(headers);
+        request.setEmail(email);
         request.setDkim(dkim);
         request.setContentIds(contentIds);
         request.setTo(to);

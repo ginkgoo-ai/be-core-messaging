@@ -20,6 +20,8 @@ public class InboundParseRequest {
 
     private String dkim;
 
+    private String email;
+
     @JsonProperty("content-ids")
     private List<String> contentIds;
 
