@@ -1,7 +1,8 @@
 package com.ginkgooai.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+// 新增字段
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundParseRequest {
+    private MimeMessage mimeMessage;
 
     private String headers;
 
@@ -22,7 +25,6 @@ public class InboundParseRequest {
 
     private String email;
 
-    @JsonProperty("content-ids")
     private List<String> contentIds;
 
     private String to;
