@@ -1,8 +1,9 @@
 package com.ginkgooai.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.ginkgooai.dto.InboundParseRequest;
+import com.ginkgooai.util.SendGridUtil;
+import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
@@ -26,6 +26,8 @@ import java.util.Properties;
 @Slf4j
 public class WebhookController {
 
+    @Resource
+    private SendGridUtil sendGridUtil;
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<String> handleInboundParse(
@@ -48,7 +50,7 @@ public class WebhookController {
             @RequestPart(value = "content-ids", required = false) List<String> contentIds,
             @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
             @RequestPart(value = "attachment-info", required = false) String attachmentInfo
-            ) {
+            ) throws MessagingException, IOException {
         
         // 新增MimeMessage解析逻辑
         MimeMessage mimeMessage = null;
@@ -63,7 +65,6 @@ public class WebhookController {
 
         // 修改请求对象构建
         InboundParseRequest request = new InboundParseRequest();
-        request.setMimeMessage(mimeMessage);  // 需要DTO新增该字段
         request.setHeaders(headers);
         request.setEmail(email);
         request.setDkim(dkim);
@@ -82,15 +83,7 @@ public class WebhookController {
         request.setCharsets(charsets);
         request.setSPF(spf);
 
-
-        log.info("Inbound parse request received:{}", JSON.toJSONString(request));
-
-        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            String headerValue = httpServletRequest.getHeader(headerName);
-            log.info("Header: {} = {}", headerName, headerValue);
-        }
+        sendGridUtil.test(mimeMessage);
 
         return ResponseEntity.ok("Success");
     }

@@ -1,8 +1,8 @@
 package com.ginkgooai.dto;
 
 // 新增字段
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundParseRequest {
-    private MimeMessage mimeMessage;
 
     private String headers;
 
