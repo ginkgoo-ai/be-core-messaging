@@ -2,7 +2,6 @@
 name: Deploy to Railway Staging Environment
 
 on: 
-  push:
   workflow_dispatch:
   release: 
     types: [published]
@@ -38,7 +37,7 @@ jobs:
           - "slate-staging"
           - "jasper-staging"
           - "legal-staging"
-    uses: ginkgoo-ai/do-actions/.github/workflows/deploy-to-railway.yml@fix/change-action-names
+    uses: ginkgoo-ai/do-actions/.github/workflows/deploy-to-railway.yml@main
     with:
       service_name: ${{ needs.get-some-vars.outputs.repo_name }}
       railway_environment: ${{ matrix.railway_environment }}
