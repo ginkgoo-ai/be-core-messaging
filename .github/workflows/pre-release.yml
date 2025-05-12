@@ -3,6 +3,7 @@ name: Deploy to Railway Staging Environment
 
 on: 
   push:
+  workflow_dispatch:
   release: 
     types: [published]
 
@@ -26,7 +27,7 @@ jobs:
         shell: bash
 
   deploy-to-railway:
-    name: Deploying - ${{ matrix.railway_environment}}
+    name: Deploying ${{matrix.service_name }}
     needs: get-some-vars
     strategy:
       fail-fast: false
