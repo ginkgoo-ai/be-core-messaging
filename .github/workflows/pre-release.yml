@@ -2,6 +2,7 @@
 name: Deploy to Railway - staging environment
 
 on: 
+  push:
   release: 
     types: [published]
 
@@ -26,20 +27,31 @@ jobs:
 
 
   deploy-to-railway:
-    name: Deploy to Railway - staging environment
-    runs-on: ubuntu-latest
+    name: Deploy to Railway
     needs: get-some-vars
-    env:
+    use: ginkgoo-ai/do-actions/.github/workflows/deploy-to-railway.yml@fix/change-action-names
+    with:
+      service_name: ${{ needs.get-some-vars.outputs.repo_name }}
+      railway_environment: "railway-staging"
+    secrets:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      RAILWAY_SERVICE_NAME: ${{ needs.get-some-vars.outputs.repo_name }}
-    container: ghcr.io/railwayapp/cli:latest     
-    steps:
-      - name: Checkout Self
-        uses: actions/checkout@v4
 
-      - name: deploy to railway environment - staging
-        run: |
-          railway up --service=${{ env.RAILWAY_SERVICE_NAME }}
+
+  # deploy-to-railway:
+  #   name: Deploy to Railway - staging environment
+  #   runs-on: ubuntu-latest
+  #   needs: get-some-vars
+  #   env:
+  #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  #     RAILWAY_SERVICE_NAME: ${{ needs.get-some-vars.outputs.repo_name }}
+  #   container: ghcr.io/railwayapp/cli:latest     
+  #   steps:
+  #     - name: Checkout Self
+  #       uses: actions/checkout@v4
+
+  #     - name: deploy to railway environment - staging
+  #       run: |
+  #         railway up --service=${{ env.RAILWAY_SERVICE_NAME }}
 
 
 
