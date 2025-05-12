@@ -2,10 +2,15 @@
 name: Deploy to Railway Staging Environment
 
 on: 
+  push:
   workflow_dispatch:
   release: 
     types: [published]
 
+permissions:
+  contents: read
+  packages: read
+  
 jobs:
   get-some-vars:
     name: Get some vars
