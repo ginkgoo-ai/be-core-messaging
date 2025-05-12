@@ -31,7 +31,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service_name: ${{ needs.get-some-vars.outputs.repo_name }}
+        service_name: 
+          - ${{ needs.get-some-vars.outputs.repo_name }}
         railway_environment: 
           - "slate-staging"
           - "jasper-staging"
